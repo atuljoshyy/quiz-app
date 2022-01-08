@@ -29,15 +29,17 @@
     <section class="flex justify-center h-full">
         <div class="bg-gray-100 w-3/2 h-auto m-8 mt-28 py-16 px-6 rounded-2xl shadow-xl border-solid border-2 border-gray-200 md:w-3/2 lg:w-1/2 xl:w-1/2  2xl:w-2/5">
             <h1 class="h-1 text-3xl font-bold mb-12">All Done!</h1>
-            <p class="mb-3 font-medium text-lg">Your final score is <span id="final-score-el" class="font-extrabold">9</span>.</p>
+            <p class="mb-3 font-medium text-lg">Your final score is <span id="finalScoreEl" class="font-extrabold"></span>.</p>
             <div>
                 <form action="" class="flex items-center  flex-wrap ">
                     <div>
                         <label for="first_name" class="text-lg">Enter Initials:</label>
-                        <input type="text" name="first_name" id="first_name" class="border-solid border-2 border-gray-400 p-2 rounded-xl ">
+                        <input type="text" name="first_name" id="username" class="border-solid border-2 border-gray-400 p-2 rounded-xl ">
                     </div>
                     <div>
-                        <button type="submit" class="bg-main-green px-7 py-2 rounded-xl md:ml-3 text-white mt-2 md:mt-0">Submit</button>
+                        <button type="submit" class="bg-main-green px-7 py-2 rounded-xl md:ml-3 text-white mt-2 md:mt-0"
+                        onclick="saveHighScore(event)"
+                        disabled id="saveBtn">Save Score</button>
                     </div>
 
                 </form>
@@ -46,6 +48,6 @@
 
         </div>
     </section>
-    <script src="/scripts/app.js"></script>
+    <script src="/scripts/results.js"></script>
 </body>
 </html>

@@ -7,20 +7,20 @@ const optionEl3 = document.querySelector('#optionEl3');
 const optionEl4 = document.querySelector('#optionEl4');
 const responseEl = document.querySelector('#responseEl');
 const nextBtn = document.querySelector('#nextBtn');
+const card = document.querySelector('#card');
 const choices = Array.from( document.getElementsByClassName('choice-text'));
+
+//results page
+const finalScoreEl = document.querySelector('#finalScoreEl');
 // ========EVENT LISTENERS==========
 // nextBtn.addEventListener('click', nextQuestion )
 
-let  currentQuestion ={};
+let currentQuestion ={};
 let acceptingAnswers = true;
+let score = 0;
 let time = 50;
 let questionCounter = 0;
 let availableQuestions = [];
-
-
-
-
-
 
 // ========COUNTDOWN TIMER==========
 document.addEventListener('DOMContentLoaded', startQuiz)
@@ -39,6 +39,8 @@ function updateTimer(){
   if(time < 0){
     clearInterval(updateTimer)
     countdown.innerHTML = '0'+'seconds left'
+    localStorage.setItem('mostRecentScore', score);
+    return window.location.assign("/pages/results.html");
   }
 }
 
@@ -87,17 +89,21 @@ const questions = [
     },
   ];
 
-  const maxQuestions = 3;
-  questionNbr = 0;
+  const maxQuestions = 5;
+  const correctScore = 10;
 
   startGame = () =>{
     questionCounter = 0;
-    time = 50;
     availableQuestions = [...questions];
     getNewQuestion();
   }
 
   getNewQuestion = () =>{
+    if(availableQuestions.length === 0 || questionCounter >= maxQuestions){
+      //go to the results page
+      localStorage.setItem('mostRecentScore', score);
+      return window.location.assign("/pages/results.html");
+    }
     questionCounter++;
     const questionIndex =  Math.floor(Math.random() * availableQuestions.length);
     currentQuestion = availableQuestions[questionIndex];
@@ -117,8 +123,33 @@ const questions = [
 
       const selectedChoice = e.target;
       const selectedAnswer = selectedChoice.dataset['number'];
-      getNewQuestion();
+      const colorToApply = selectedAnswer == currentQuestion.answer ? 'bg-green-200' :'bg-red-200' ;
+      responseEl.innerText = selectedAnswer == currentQuestion.answer ? 'Correct!' : 'Wrong!';
+      time = selectedAnswer == currentQuestion.answer ? time : time-10;
+      if (colorToApply === 'bg-green-200'){
+        incrementScore(correctScore);
+        responseEl.classList.add('text-green-400')
+      }
+      else{
+        responseEl.classList.add('text-red-400')
+      }
+     
+      card.classList.add(colorToApply);
+      responseEl.classList.remove('hidden');
+      setTimeout(()=>{
+        card.classList.remove(colorToApply);
+        responseEl.classList.add('hidden');
+        getNewQuestion();
+      },1000)
     })
   })
+
+  incrementScore = num =>{
+    score += num;
+    console.log(score);
+    return score
+    
+  }
+
   startGame();
 
